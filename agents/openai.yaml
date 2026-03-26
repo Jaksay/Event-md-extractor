@@ -1,0 +1,4 @@
+interface:
+  display_name: "活动 Markdown 提取"
+  short_description: "将活动原文整理为结构化 Markdown 文件并归档原文"
+  default_prompt: "Use $event-md-extractor to convert this event text into a structured Markdown file and a matching raw archive."
