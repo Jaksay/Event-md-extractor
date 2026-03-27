@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>活动海报固定模板</title>
+    <style>
+      :root {
+        --page-bg: #efe7da;
+        --page-ink: #1f1a17;
+        --muted: #74695f;
+        --line: rgba(31, 26, 23, 0.12);
+        --card: rgba(255, 251, 244, 0.86);
+        --cover-bg: linear-gradient(180deg, #fbf3df 0%, #f1e1b6 48%, #d8d8d1 100%);
+        --agenda-bg: linear-gradient(180deg, #f8f5ee 0%, #ece5da 100%);
+        --dark: #181818;
+        --accent: #d16f2d;
+        --accent-soft: #e8bb88;
+        --shadow: 0 24px 60px rgba(26, 20, 14, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--page-ink);
+        font-family: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.7), transparent 30%),
+          linear-gradient(180deg, #f3ebdf 0%, #e8dece 100%);
+      }
+
+      .shell {
+        width: min(1380px, calc(100vw - 40px));
+        margin: 0 auto;
+        padding: 34px 0 72px;
+      }
+
+      .intro {
+        padding: 24px 26px;
+        border-radius: 24px;
+        border: 1px solid var(--line);
+        background: var(--card);
+        backdrop-filter: blur(12px);
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        font-size: 12px;
+        line-height: 1;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Iowan Old Style", "Source Han Serif SC", "STSong", serif;
+        font-size: clamp(30px, 4.8vw, 56px);
+        line-height: 0.98;
+        font-weight: 700;
+      }
+
+      .intro p {
+        max-width: 900px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 28px;
+        margin-top: 28px;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .card-head strong {
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .card-head span {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .poster {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        border-radius: 30px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .poster-inner {
+        position: absolute;
+        inset: 0;
+        padding: 28px;
+      }
+
+      .brand-stamp {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        font-size: 11px;
+        line-height: 1;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.56);
+        backdrop-filter: blur(8px);
+      }
+
+      .brand-stamp strong {
+        font-size: 12px;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      .poster-signoff {
+        font-size: 11px;
+        line-height: 1.5;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        opacity: 0.72;
+      }
+
+      .tiny {
+        font-size: 11px;
+        line-height: 1.5;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .rule {
+        height: 1px;
+        background: currentColor;
+        opacity: 0.16;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        display: inline-flex;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid currentColor;
+        font-size: 11px;
+        line-height: 1;
+      }
+
+      .cover {
+        background: var(--cover-bg);
+        color: #241d18;
+      }
+
+      .cover::before,
+      .cover::after,
+      .agenda::before,
+      .agenda::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        pointer-events: none;
+      }
+
+      .cover::before {
+        width: 320px;
+        height: 320px;
+        top: -140px;
+        right: -120px;
+        background: rgba(255, 255, 255, 0.38);
+      }
+
+      .cover::after {
+        width: 220px;
+        height: 220px;
+        left: -70px;
+        bottom: 130px;
+        background: rgba(209, 111, 45, 0.16);
+      }
+
+      .cover .poster-inner {
+        display: grid;
+        place-items: center;
+      }
+
+      .cover-center {
+        display: grid;
+        gap: 18px;
+        width: min(100%, 460px);
+      }
+
+      .cover-title {
+        max-width: 460px;
+        font-size: 42px;
+        line-height: 1.18;
+        letter-spacing: -0.02em;
+        font-weight: 700;
+        text-align: left;
+      }
+
+      .cover-footer {
+        display: grid;
+        gap: 14px;
+      }
+
+      .cover-meta {
+        display: grid;
+        gap: 12px;
+        text-align: left;
+      }
+
+      .cover-meta div {
+        display: grid;
+        gap: 4px;
+      }
+
+      .cover-meta strong {
+        font-size: 12px;
+        line-height: 1;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .cover-meta span {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .cta-box {
+        display: grid;
+        gap: 14px;
+        color: inherit;
+      }
+
+      .cta-col {
+        display: grid;
+        gap: 6px;
+        justify-items: start;
+        text-align: left;
+      }
+
+      .cta-box strong {
+        display: block;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      .cta-box span {
+        display: block;
+        font-size: 16px;
+        line-height: 1.5;
+        color: rgba(36, 29, 24, 0.88);
+      }
+
+      .guest-list {
+        display: grid;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .guest-list li {
+        font-size: 16px;
+        line-height: 1.45;
+      }
+
+      .agenda {
+        background: var(--agenda-bg);
+        color: #211a15;
+      }
+
+      .agenda::before {
+        width: 280px;
+        height: 280px;
+        top: -130px;
+        right: -120px;
+        background: rgba(209, 111, 45, 0.12);
+      }
+
+      .agenda::after {
+        width: 180px;
+        height: 180px;
+        bottom: -60px;
+        left: -50px;
+        background: rgba(36, 29, 24, 0.06);
+      }
+
+      .agenda .poster-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .agenda-header {
+        display: grid;
+        gap: 14px;
+      }
+
+      .agenda-title {
+        max-width: 430px;
+        font-family: "Iowan Old Style", "Source Han Serif SC", "STSong", serif;
+        font-size: 42px;
+        line-height: 0.94;
+        letter-spacing: -0.03em;
+        font-weight: 700;
+      }
+
+      .agenda-meta {
+        display: grid;
+        gap: 4px;
+        color: #6b6056;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .agenda-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 16px 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.52);
+        border: 1px solid rgba(33, 26, 21, 0.08);
+      }
+
+      .agenda-row {
+        display: grid;
+        grid-template-columns: 82px 1fr;
+        gap: 14px;
+        padding: 12px 0;
+        border-top: 1px solid rgba(33, 26, 21, 0.1);
+      }
+
+      .agenda-row:first-child {
+        border-top: 0;
+      }
+
+      .agenda-time {
+        font-size: 12px;
+        line-height: 1.5;
+        color: #7c6d61;
+        font-weight: 700;
+      }
+
+      .agenda-row strong {
+        display: block;
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      .agenda-row span {
+        display: block;
+        margin-top: 5px;
+        font-size: 12px;
+        line-height: 1.55;
+        color: #655a50;
+      }
+
+      .speaker-panel {
+        padding: 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(33, 26, 21, 0.08);
+      }
+
+      .speaker-panel .tiny {
+        color: var(--muted);
+      }
+
+      .speaker-panel strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .speaker-panel em {
+        display: block;
+        margin-top: 8px;
+        font-style: normal;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #61574e;
+      }
+
+      .speaker-panel p {
+        margin: 10px 0 0;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #4f473f;
+      }
+
+      .agenda-footer {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .note {
+        margin-top: 28px;
+        padding: 18px 22px;
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: rgba(255, 252, 245, 0.72);
+      }
+
+      .note strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+
+      .note p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      @media (max-width: 900px) {
+        .shell {
+          width: min(100vw - 24px, 980px);
+          padding-top: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="intro">
+        <p class="eyebrow">Stable Poster Templates</p>
+        <h1>联谱推荐活动，固定两张统一模板</h1>
+        <p>
+          这里不再做多风格探索，而是直接收敛成“联谱推荐活动”的两张统一模板：封面型和议程型。
+          模板使用固定版式、固定信息槽位和固定长宽比例。所有活动都应该先套进这套品牌骨架，再填入具体活动内容。
+        </p>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <div class="card-head">
+            <strong>封面型模板</strong>
+            <span>Cover Poster / 2:3</span>
+          </div>
+          <section class="poster cover">
+            <div class="poster-inner">
+              <div class="cover-center">
+                <div class="brand-stamp">
+                  <strong>联谱推荐活动</strong>
+                </div>
+                <div class="cover-title">OpenClaw 打造飞书数字员工团队</div>
+                <div class="cover-footer">
+                  <div class="cover-meta">
+                    <div>
+                      <strong>时间</strong>
+                      <span>2026.03.28 Sat 18:30-20:30</span>
+                    </div>
+                    <div>
+                      <strong>地点</strong>
+                      <span>北京 AI 原点社区东升大厦A座19层原点学堂涌现厅</span>
+                    </div>
+                  </div>
+                  <div class="rule"></div>
+                  <div class="cta-box">
+                    <div class="cta-col">
+                      <strong>主办方</strong>
+                      <span>原点 AI 学堂</span>
+                    </div>
+                    <div class="cta-col">
+                      <strong>嘉宾</strong>
+                      <ul class="guest-list">
+                        <li>张三</li>
+                        <li>李四</li>
+                        <li>王五</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <strong>议程型模板</strong>
+            <span>Agenda Poster / 2:3</span>
+          </div>
+          <section class="poster agenda">
+            <div class="poster-inner">
+              <div>
+                <div class="agenda-header">
+                  <div class="brand-stamp">
+                    <strong>联谱</strong>
+                    <span>推荐活动</span>
+                  </div>
+                  <div class="agenda-title">OpenClaw 打造飞书数字员工团队</div>
+                  <div class="agenda-meta">
+                    <div>2026.03.28 Sat 18:30-20:30</div>
+                    <div>北京 AI 原点社区 东升大厦A座19层｜原点学堂涌现厅</div>
+                  </div>
+                </div>
+
+                <div class="agenda-list">
+                  <div class="agenda-row">
+                    <div class="agenda-time">18:30<br />19:00</div>
+                    <div>
+                      <strong>认识龙虾 & 一键安装</strong>
+                      <span>理解 OpenClaw 的定位差异，现场演示零配置安装。</span>
+                    </div>
+                  </div>
+                  <div class="agenda-row">
+                    <div class="agenda-time">19:00<br />19:40</div>
+                    <div>
+                      <strong>使用龙虾</strong>
+                      <span>接入飞书、派发任务、理解业务上下文，走完整流程。</span>
+                    </div>
+                  </div>
+                  <div class="agenda-row">
+                    <div class="agenda-time">19:40<br />20:10</div>
+                    <div>
+                      <strong>实战：多龙虾协作</strong>
+                      <span>展示多只龙虾如何分工查数据、写方案、盯进度。</span>
+                    </div>
+                  </div>
+                  <div class="agenda-row">
+                    <div class="agenda-time">20:10<br />20:30</div>
+                    <div>
+                      <strong>交流</strong>
+                      <span>带业务场景来，现场判断能不能用、怎么用。</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="agenda-footer">
+                <div class="speaker-panel">
+                  <div class="tiny">分享嘉宾</div>
+                  <strong>辛一</strong>
+                  <em>ai798 Lab 联合创始人</em>
+                  <p>长期从事 AI 产品与出海业务，参与过多个 AI 项目的早期搭建，其中三项实现过千万级 ARR。</p>
+                </div>
+                <div class="poster-signoff">联谱推荐活动 / Lianpu Recommended Event</div>
+              </div>
+            </div>
+          </section>
+        </article>
+      </section>
+
+      <section class="note">
+        <strong>当前这版的目标</strong>
+        <p>
+          先把“固定封面模板 + 固定议程模板”立住。封面模板目前只承载主题、主办方、嘉宾、时间、地点，不承载亮点、价格、报名方式和议程细节。后面如果继续做，应继续围绕这套稳定槽位去定义裁剪上限和溢出规则。
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
