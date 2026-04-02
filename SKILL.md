@@ -1,6 +1,6 @@
 ---
 name: "event-md-extractor"
-description: "Convert unstructured event text into structured Markdown for a single event. Use when the user pastes Chinese or mixed Chinese-English activity/event copy and wants: (1) a normalized event Markdown file, (2) a matching raw archive file under raw/, (3) extraction of time, venue, guests, category, and agenda or guest/theme fallback into a stable two-section format, or (4) consistent event-file naming and formatting."
+description: "Convert unstructured event text into structured Markdown for a single event. Use when the user pastes Chinese or mixed Chinese-English activity/event copy and wants: (1) a normalized event Markdown file, (2) a matching raw archive file under raw/, (3) extraction of time, venue, guests, category, a short SEO-friendly one-line introduction, and agenda or guest/theme fallback into a flat H3 section structure, or (4) consistent event-file naming and formatting."
 ---
 
 # Event Markdown Extractor
@@ -12,10 +12,21 @@ Convert one event text blob into two Markdown artifacts:
 
 Follow the workflow exactly.
 
+## Output Structure
+
+- `### 基本信息`: always present. Contains the event title, one-line introduction, and confirmed metadata such as organizer, time, format, city, venue/link, and category.
+- `### 活动主题`: optional. Use for confirmed discussion themes, focus areas, or event highlights.
+- `### 活动安排`: optional. Use for agenda content with explicit time anchors. This is the primary descriptive block when a detailed schedule is available.
+- `### 分享嘉宾`: optional. Use for course-like, workshop-like, or single-speaker events with one clearly identified main speaker.
+- `### 嘉宾阵容`: optional. Use for multi-person guest lineups when there is no detailed agenda, or when an independent lineup adds value.
+
+Use a flat H3 structure. Do not wrap these sections inside `### 活动介绍`.
+
 ## Workflow
 
 1. Parse the event text and extract:
    - activity title
+   - one-line introduction
    - organizer
    - price
    - start time
@@ -50,9 +61,13 @@ Example:
 Write the structured file with this section order:
 
 1. `### 基本信息`
-2. `### 活动介绍`
+2. `### 活动主题`
+3. `### 活动安排`
+4. `### 分享嘉宾`
+5. `### 嘉宾阵容`
 
 Do not include `# 活动标题`, `## 活动介绍原文`, or any placeholder text.
+Do not wrap topic, agenda, or guest sections inside `### 活动介绍`.
 
 Use this template shape:
 
@@ -60,6 +75,7 @@ Use this template shape:
 ### 基本信息
 
 - 活动标题：
+- 一句话介绍：
 - 主办方：
 - 价格：
 - 开始时间：
@@ -69,13 +85,11 @@ Use this template shape:
 - 地点/链接：
 - 分类：
 
-### 活动介绍
-
-#### 活动主题
+### 活动主题
 - 主题或讨论方向
 - 主题或讨论方向
 
-#### 活动安排
+### 活动安排
 - 14:00-14:30 主题分享
   - **《议题名称》**
     - **姓名** | 身份说明
@@ -86,12 +100,12 @@ Use this template shape:
   - **《议题名称》**
     - **姓名** | 机构 title
 
-#### 分享嘉宾
+### 分享嘉宾
 - **姓名** | 身份说明
 - 履历或实践经验
 - 履历或实践经验
 
-#### 嘉宾阵容
+### 嘉宾阵容
 - **姓名** | 机构 title
 - **姓名** | 机构 title
 ```
@@ -99,29 +113,31 @@ Use this template shape:
 ## Section Rules
 
 - `### 基本信息` should always appear.
-- `### 活动介绍` should appear when at least one introduction block can be extracted.
-- Inside `### 基本信息`, use the fixed field order from the template, but emit only confirmed lines.
-- Inside `### 活动介绍`, emit only the blocks that are supported by the source.
-- Never emit empty fields, empty sub-sections, `没有信息`, `未知`, `未提供`, or editorial notes about missing content.
+- `### 活动主题`, `### 活动安排`, `### 分享嘉宾`, and `### 嘉宾阵容` should appear only when supported by the source.
+- Inside `### 基本信息`, use the fixed field order from the template.
+- Emit `一句话介绍` when a reliable one-line introduction can be generated from confirmed content.
+- Other basic info fields should be emitted only when confirmed by the source.
+- Emit optional `###` sections only when they are supported by the source.
+- Never emit empty fields, empty sections, `没有信息`, `未知`, `未提供`, or editorial notes about missing content.
 - Do not invent facts to keep the structure full.
 - If a fragment cannot be classified with confidence, omit it rather than forcing it into the output.
 
 ## Degradation Rules
 
-Choose the strongest supported structure for `### 活动介绍`:
+Choose the strongest supported `###` blocks for the descriptive part of the event:
 
-1. `#### 活动安排`
+1. `### 活动安排`
    - Use when the source contains explicit agenda evidence.
    - Agenda evidence includes time ranges, ordered schedule items, repeated `时间 + 内容` patterns, or clear process labels such as `签到`, `开场`, `主题分享`, `圆桌`, `Q&A`.
    - When `活动安排` is available, it is the primary block.
-2. `#### 分享嘉宾`
+2. `### 分享嘉宾`
    - Use when the event is a course, workshop, training session, salon, or single-speaker sharing session and the source identifies one main speaker, lecturer, or share guest.
    - Trigger on labels such as `分享嘉宾`, `主讲人`, `讲师`, `授课老师`, `导师`.
    - Preserve the main speaker line and up to 2-3 high-value credential bullets when the source provides them.
-3. `#### 嘉宾阵容`
+3. `### 嘉宾阵容`
    - Use when there is no explicit detailed agenda, but there is a clear multi-person guest lineup.
    - Guest evidence requires identifiable names and at least one meaningful attribute such as organization or title.
-4. `#### 活动主题`
+4. `### 活动主题`
    - Use when there is no explicit agenda and no clear guest lineup, but the source states discussion topics, focus areas, or event highlights.
 
 Preferred fallback chain:
@@ -133,16 +149,16 @@ Preferred fallback chain:
 
 When multiple blocks are supported, keep them in this display order:
 
-1. `#### 活动主题`
-2. `#### 活动安排`
-3. `#### 分享嘉宾`
-4. `#### 嘉宾阵容`
+1. `### 活动主题`
+2. `### 活动安排`
+3. `### 分享嘉宾`
+4. `### 嘉宾阵容`
 
-Do not create `#### 补充信息`.
+Do not create `### 活动介绍` or `### 补充信息`.
 
 ## Agenda Formatting Rules
 
-- In `#### 活动安排`, time is the main anchor.
+- In `### 活动安排`, time is the main anchor.
 - Each agenda item should use a top-level bullet.
 - The top-level bullet may be either:
   - `- 14:00-14:30 主题分享`
@@ -169,7 +185,7 @@ Do not create `#### 补充信息`.
 Example:
 
 ```md
-#### 活动安排
+### 活动安排
 
 - 13:30-14:00
   - 签到入场
@@ -211,15 +227,31 @@ Example:
 - Use `YYYY-MM-DD HH:mm` for start and end time.
 - Use `09:00-10:00` for agenda time ranges. Keep full date-time only if an agenda crosses days.
 - `形式` must be one of `线上`, `线下`, `混合`.
+- `一句话介绍` should appear immediately after `活动标题`.
 - `价格` comes after `主办方`.
 - Omit `价格` if the source does not provide it.
 - Leave `TAG`, `报名方式`, and `附件` unprocessed in the table workflow; this skill does not need to emit them in the structured event file.
 
+## One-line Introduction Rules
+
+- `一句话介绍` is a generated one-line event introduction for listing display and SEO.
+- Base `一句话介绍` only on confirmed event content from the source.
+- Keep `一句话介绍` within 40 Chinese characters.
+- Write `一句话介绍` in natural editorial wording, not abstract AI-style summarization.
+- Reuse strong source keywords, product names, event names, and topic terms when they improve searchability.
+- Prefer concrete wording over empty high-level phrasing.
+- Vary sentence structure naturally according to the source; do not force a fixed summary template.
+- Avoid repetitive openings such as `聚焦`、`围绕`、`共同探讨` as a default pattern.
+- Do not mechanically copy the full title unless the title itself is already concise and suitable as a summary.
+- Do not add promotional filler such as `重磅`, `精彩`, `不容错过`, `行业盛会`.
+- Do not invent benefits, conclusions, or claims that are not supported by the source.
+- Omit `一句话介绍` only when the source is too sparse to support a reliable one-line introduction.
+
 ## Guest Rules
 
 - Record all confirmed guests.
-- Use `#### 分享嘉宾` for a single clearly identified speaker in course-like or workshop-like events.
-- Use `#### 嘉宾阵容` for multi-person lineups, forums, summits, roundtables, or mixed guest lists.
+- Use `### 分享嘉宾` for a single clearly identified speaker in course-like or workshop-like events.
+- Use `### 嘉宾阵容` for multi-person lineups, forums, summits, roundtables, or mixed guest lists.
 - In `分享嘉宾`, put the main speaker on the first bullet as `**姓名** | 身份说明`.
 - In `分享嘉宾`, keep up to 2-3 concise bullets of verifiable credential or practice background when they materially support the speaker's credibility.
 - Do not rewrite long biographies into paragraphs; keep them as short factual bullets.
