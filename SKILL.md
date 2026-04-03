@@ -14,7 +14,7 @@ Follow the workflow exactly.
 
 ## Output Structure
 
-- `### 基本信息`: always present. Contains the event title, one-line introduction, and confirmed metadata such as organizer, time, format, city, venue/link, and category.
+- `### 基本信息`: always present. Contains the event title, one-line introduction, organizer, time, format, city, venue/link, and category in a fixed field list. If a basic field cannot be confirmed from the source, output `【待补充】` for that field.
 - `### 活动主题`: optional. Use for confirmed discussion themes, focus areas, or event highlights.
 - `### 活动安排`: optional. Use for agenda content with explicit time anchors. This is the primary descriptive block when a detailed schedule is available.
 - `### 分享嘉宾`: optional. Use for course-like, workshop-like, or single-speaker events with one clearly identified main speaker.
@@ -66,7 +66,7 @@ Write the structured file with this section order:
 4. `### 分享嘉宾`
 5. `### 嘉宾阵容`
 
-Do not include `# 活动标题`, `## 活动介绍原文`, or any placeholder text.
+Do not include `# 活动标题`, `## 活动介绍原文`, or ad hoc placeholder text outside the fixed `### 基本信息` fields.
 Do not wrap topic, agenda, or guest sections inside `### 活动介绍`.
 
 Use this template shape:
@@ -74,16 +74,16 @@ Use this template shape:
 ```md
 ### 基本信息
 
-- 活动标题：
-- 一句话介绍：
-- 主办方：
-- 价格：
-- 开始时间：
-- 结束时间：
-- 形式：
-- 城市：
-- 地点/链接：
-- 分类：
+- 活动标题：【待补充】
+- 一句话介绍：【待补充】
+- 主办方：【待补充】
+- 价格：【待补充】
+- 开始时间：【待补充】
+- 结束时间：【待补充】
+- 形式：【待补充】
+- 城市：【待补充】
+- 地点/链接：【待补充】
+- 分类：【待补充】
 
 ### 活动主题
 - 主题或讨论方向
@@ -115,10 +115,10 @@ Use this template shape:
 - `### 基本信息` should always appear.
 - `### 活动主题`, `### 活动安排`, `### 分享嘉宾`, and `### 嘉宾阵容` should appear only when supported by the source.
 - Inside `### 基本信息`, use the fixed field order from the template.
-- Emit `一句话介绍` when a reliable one-line introduction can be generated from confirmed content.
-- Other basic info fields should be emitted only when confirmed by the source.
+- Inside `### 基本信息`, always emit the full fixed field list from the template.
+- If a `### 基本信息` field cannot be confirmed from the source, output `【待补充】` as its value.
 - Emit optional `###` sections only when they are supported by the source.
-- Never emit empty fields, empty sections, `没有信息`, `未知`, `未提供`, or editorial notes about missing content.
+- Never emit empty fields, empty sections, `没有信息`, `未知`, `未提供`, or editorial notes about missing content. Use only `【待补充】` for missing values inside `### 基本信息`.
 - Do not invent facts to keep the structure full.
 - If a fragment cannot be classified with confidence, omit it rather than forcing it into the output.
 
@@ -229,7 +229,7 @@ Example:
 - `形式` must be one of `线上`, `线下`, `混合`.
 - `一句话介绍` should appear immediately after `活动标题`.
 - `价格` comes after `主办方`.
-- Omit `价格` if the source does not provide it.
+- In `### 基本信息`, if any fixed field value is missing, emit `【待补充】` for that field, including `价格` and `一句话介绍`.
 - Leave `TAG`, `报名方式`, and `附件` unprocessed in the table workflow; this skill does not need to emit them in the structured event file.
 
 ## One-line Introduction Rules
@@ -245,7 +245,7 @@ Example:
 - Do not mechanically copy the full title unless the title itself is already concise and suitable as a summary.
 - Do not add promotional filler such as `重磅`, `精彩`, `不容错过`, `行业盛会`.
 - Do not invent benefits, conclusions, or claims that are not supported by the source.
-- Omit `一句话介绍` only when the source is too sparse to support a reliable one-line introduction.
+- If the source is too sparse to support a reliable one-line introduction, keep the field and output `【待补充】`.
 
 ## Guest Rules
 
