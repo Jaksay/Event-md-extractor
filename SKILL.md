@@ -3,7 +3,7 @@ name: "event-md-extractor"
 description: "Convert unstructured event text into structured Markdown for a single event. Use when the user pastes Chinese or mixed Chinese-English activity/event copy and wants: (1) a normalized event Markdown file, (2) a matching raw archive file under raw/, (3) extraction of time, venue, guests, category, a short SEO-friendly one-line introduction, and agenda or guest/theme fallback into a flat H3 section structure, or (4) consistent event-file naming and formatting."
 ---
 
-# Event Markdown Extractor
+# 活动信息结构化助手
 
 Convert one event text blob into two Markdown artifacts:
 

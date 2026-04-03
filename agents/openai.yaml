@@ -1,4 +1,4 @@
 interface:
-  display_name: "活动 Markdown 提取"
+  display_name: "活动信息结构化助手"
   short_description: "将活动原文整理为平铺 H3 结构化 Markdown、生成一句话介绍并归档原文"
   default_prompt: "Use $event-md-extractor to convert this event text into a structured Markdown file with flat H3 sections such as 基本信息, 活动主题, 活动安排, 分享嘉宾, and 嘉宾阵容 when supported, including a short SEO-friendly 一句话介绍 field under 基本信息, plus a matching raw archive."
