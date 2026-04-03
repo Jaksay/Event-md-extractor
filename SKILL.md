@@ -229,6 +229,7 @@ Example:
 - `形式` must be one of `线上`, `线下`, `混合`.
 - `一句话介绍` should appear immediately after `活动标题`.
 - `价格` comes after `主办方`.
+- If multiple organizers belong in the `主办方` field, keep them on the same line and join them with `、`.
 - In `### 基本信息`, if any fixed field value is missing, emit `【待补充】` for that field, including `价格` and `一句话介绍`.
 - Leave `TAG`, `报名方式`, and `附件` unprocessed in the table workflow; this skill does not need to emit them in the structured event file.
 
